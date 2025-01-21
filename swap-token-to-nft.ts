@@ -27,11 +27,11 @@ umi.use(mplCore());
 umi.use(mplHybrid());
 
 // Define the public key of the escrow configuration.
-const escrowAddress = publicKey("8KMySmw7Di4YMLLoYNmKp9g18xXVXhNDtWZd45sAnQZc");
+const escrowAddress = publicKey("4ov1tbM2nUKUDZeZtGLAKjFmGmGbxUV9Ww72ptDSQfJy");
 
 // Define the public key of the collection associated with the escrow.
 const collectionAddress = publicKey(
-  "58Ck1mWP76detALUKJcUPY5MD9j8bSyq9zZ3ra5dw2NS"
+  "7qYGyrweq9adgZBzEgAdTNtiK5yWBwkY2imstKY5khj"
 );
 
 // Define the public key of the SPL token to be involved in the capture process.
@@ -41,7 +41,7 @@ const tokenAddress = publicKey("84AYw2XZ5HcyWWmVNR6s4uS3baHrMLpPMnEfBTm6JkdE");
 await captureV1(umi, {
   owner: umi.identity, // Specify the wallet (identity) owning the asset to be swapped.
   escrow: escrowAddress, // Provide the escrow account address for the operation.
-  asset: publicKey("Hpa37nNx9eRBj3oRn65e2FnHyx5SMdy8fTZ7UgxYrYRw"),
+  asset: publicKey("EC6ooiNSgGYAHsN9AmKkGUhQpEowbFsatJU4p5ZrGUa3"),
   // Public key of the asset being swapped for SPL tokens.
 
   collection: collectionAddress, // Specify the collection tied to the escrow configuration.

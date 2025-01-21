@@ -16,9 +16,7 @@ export async function createCoreCollection(umi: Umi) {
 
   const connection = new Connection(clusterApiUrl("devnet"));
 
-  const user = await getKeypairFromFile(
-    "/home/asad/.config/solana/id.json"
-  );
+  const user = await getKeypairFromFile("/home/asad/.config/solana/id.json");
 
   const umiUser = umi.eddsa.createKeypairFromSecretKey(user.secretKey);
   umi.use(keypairIdentity(umiUser));
@@ -26,9 +24,9 @@ export async function createCoreCollection(umi: Umi) {
   const collectionAddress = generateSigner(umi);
 
   const transaction = createCollection(umi, {
-  name: "Asad Collection",
-  uri: "https://raw.githubusercontent.com/solana-developers/professional-education/main/labs/sample-nft-collection-offchain-data.json",
-  collection:collectionAddress,
+    name: "Asad Collection",
+    uri: "https://raw.githubusercontent.com/solana-developers/professional-education/main/labs/sample-nft-collection-offchain-data.json",
+    collection: collectionAddress,
   });
 
   await transaction.sendAndConfirm(umi);
@@ -55,5 +53,5 @@ export async function createCoreCollection(umi: Umi) {
     assets.push(await fetchAsset(umi, assetAddress.publicKey));
   }
 
-  return { collection, assets };
+  return {collection};
 }
