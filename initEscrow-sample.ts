@@ -29,8 +29,6 @@ const connection = new Connection(clusterApiUrl("devnet"));
 const user = await getKeypairFromFile("/home/asad/.config/solana/id.json");
 
 // Define the base URI for metadata (points to an IPFS directory for assets).
-const BASE_URL =
-  "https://rose-leading-cricket-429.mypinata.cloud/ipfs/QmSgEhWcYJE2iMrkas2WNTwZ5GVpVz2HjkDi2XP3VykUFi/";
 
 // Initialize the Umi instance with the Solana connection.
 const umi = createUmi(connection.rpcEndpoint);
@@ -50,12 +48,12 @@ umi.use(mplHybrid());
 const tokenAddress = publicKey("84AYw2XZ5HcyWWmVNR6s4uS3baHrMLpPMnEfBTm6JkdE");
 
 // Create a core collection on the Solana blockchain for managing assets.
-const { collection } = await createCoreCollection(umi);
+const  collection  = publicKey("3SsoHng2czRKa1Prdsihgm95DdKpo9Wi2F6yB8ANN8zi");
 
 // Derive the PDA (Program Derived Address) for the escrow account using its program ID and collection public key.
 const escrow = umi.eddsa.findPda(MPL_HYBRID_PROGRAM_ID, [
   string({ size: "variable" }).serialize("escrow"), // Serialize the string "escrow" as part of the seed.
-  publicKeySerializer().serialize(collection.publicKey), // Serialize the collection's public key as part of the seed.
+  publicKeySerializer().serialize(collection), // Serialize the collection's public key as part of the seed.
 ]);
 
 // Find the associated token account for the fee payments.
@@ -67,12 +65,12 @@ const feeAta = findAssociatedTokenPda(umi, {
 // Initialize the escrow contract with specific parameters.
 const initEscrowTx = await initEscrowV1(umi, {
   escrow: escrow, // Escrow PDA.
-  collection: collection.publicKey, // The collection tied to the escrow.
+  collection: collection, // The collection tied to the escrow.
   token: tokenAddress, // The token to be held in escrow.
   feeLocation: umi.identity.publicKey, // Account where the fees will be sent.
-  name: "ASD", // Name of the escrow (metadata).
-  uri: BASE_URL, // URI pointing to metadata for the escrow.
-  max: 3, // Maximum number of assets that can be escrowed.
+  name: "IKIGAI NFT", // Name of the escrow (metadata).
+  uri: "https://nft.ikigaionsol.com/media/collection.json", // URI pointing to metadata for the escrow.
+  max: 1000, // Maximum number of assets that can be escrowed.
   min: 1, // Minimum number of assets required to start escrow.
   amount: 5_000_000_000, // Total amount of the token to escrow (in smallest denomination).
   feeAmount: 3_000_000_000, // Fee amount for the escrow (in smallest denomination).

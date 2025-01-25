@@ -25,7 +25,7 @@ import {
 
 export async function createAsset(umi: Umi) {
   const BASE_URL =
-    "https://rose-leading-cricket-429.mypinata.cloud/ipfs/QmSgEhWcYJE2iMrkas2WNTwZ5GVpVz2HjkDi2XP3VykUFi/";
+    "https://nft.ikigaionsol.com/media/IKI_";
 
   const connection = new Connection(clusterApiUrl("devnet"));
 
@@ -76,7 +76,7 @@ export async function createAsset(umi: Umi) {
 
   // Existing collection address
   const collectionAddress = publicKey(
-    "7qYGyrweq9adgZBzEgAdTNtiK5yWBwkY2imstKY5khj"
+    "3SsoHng2czRKa1Prdsihgm95DdKpo9Wi2F6yB8ANN8zi"
   );
 
   // Fetch the collection details
@@ -89,26 +89,22 @@ export async function createAsset(umi: Umi) {
     asset: assetAddress, // New asset's public key
     collection: collection, // Existing collection
     owner: umi.identity.publicKey, // Owner of the asset
-    name: `Asad Asset`, // Asset name
-    uri: `${BASE_URL}/2.json`, // Metadata URI
+    name: `IKIGAI NFT`, // Asset name
+    uri: `${BASE_URL}1.json`, // Metadata URI
   });
 
   // Send and confirm the transaction
   await transaction.sendAndConfirm(umi);
-  console.log(`Created Asset Address: ${assetAddress.publicKey}`);
+  console.log(`Created Asset Address: ${assetAddress.publicKey}`)
 
-  // Fetch and log the created asset
-  const asset = await fetchAsset(umi, assetAddress.publicKey);
-  console.log("Fetched Asset Details:", asset);
-
-  return asset;
+  return assetAddress.publicKey;
 }
 
 (async () => {
   try {
     const umi = createUmi(clusterApiUrl("devnet"));
     const asset = await createAsset(umi);
-    console.log("Asset successfully created:", asset.publicKey);
+    console.log("Asset successfully created:", asset);
   } catch (error) {
     console.error("Error creating asset:", error);
   }

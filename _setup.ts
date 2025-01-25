@@ -5,53 +5,55 @@ import { generateSigner, keypairIdentity, Umi } from "@metaplex-foundation/umi";
 import {
   createCollection,
   fetchCollection,
-  create,
-  AssetV1,
-  fetchAsset,
 } from "@metaplex-foundation/mpl-core";
 
-export async function createCoreCollection(umi: Umi) {
-  const BASE_URL =
-    "https://rose-leading-cricket-429.mypinata.cloud/ipfs/QmSgEhWcYJE2iMrkas2WNTwZ5GVpVz2HjkDi2XP3VykUFi/";
-
+export async function createCoreCollection() {
+  // Initialize connection and Umi instance
   const connection = new Connection(clusterApiUrl("devnet"));
+  const umi = createUmi(clusterApiUrl("devnet"));
 
+  // Load the user's keypair
   const user = await getKeypairFromFile("/home/asad/.config/solana/id.json");
-
   const umiUser = umi.eddsa.createKeypairFromSecretKey(user.secretKey);
   umi.use(keypairIdentity(umiUser));
 
+  // Generate a new signer for the collection
   const collectionAddress = generateSigner(umi);
 
-  const transaction = createCollection(umi, {
-    name: "Asad Collection",
-    uri: "https://raw.githubusercontent.com/solana-developers/professional-education/main/labs/sample-nft-collection-offchain-data.json",
-    collection: collectionAddress,
-  });
+  console.log(`Generated Collection Address: ${collectionAddress.publicKey}`);
 
-  await transaction.sendAndConfirm(umi);
-
-  const collection = await fetchCollection(umi, collectionAddress.publicKey);
-
-  console.log(`Collection Address is ${collectionAddress.publicKey}`);
-
-  const assets: AssetV1[] = [];
-
-  for (let i = 0; i < 3; i++) {
-    const assetAddress = generateSigner(umi);
-    const transaction = create(umi, {
-      asset: assetAddress,
-      collection: collection,
-      owner: umi.identity.publicKey,
-      name: `Asad ${i + 1}`,
-      uri: `${BASE_URL}/${i + 1}.json`,
+  try {
+    // Create the collection
+    const transaction = await createCollection(umi, {
+      name: "IKIGAI NFT Collection", // Collection name
+      uri: `https://nft.ikigaionsol.com/media/collection.json`, // Metadata URI
+      collection: collectionAddress, // Collection public key
     });
-    await transaction.sendAndConfirm(umi);
 
-    console.log(`Asset Address ${i + 1} is ${assetAddress.publicKey}`);
+    // Send and confirm the transaction
+    const transactionSignature = await transaction.sendAndConfirm(umi);
+    console.log(
+      `Collection created successfully. Transaction Signature: ${transactionSignature}`
+    );
 
-    assets.push(await fetchAsset(umi, assetAddress.publicKey));
+    // Fetch and return the collection details
+    const collection = await fetchCollection(umi, collectionAddress.publicKey);
+    console.log(`Collection fetched successfully: ${collection.publicKey}`);
+    return collection;
+  } catch (error) {
+    console.error(
+      "Error creating or fetching the collection. Ensure the account is initialized:",
+      error
+    );
+    throw error;
   }
-
-  return {collection};
 }
+
+(async () => {
+  try {
+    const collection = await createCoreCollection();
+    console.log("Collection created:", collection);
+  } catch (error) {
+    console.error("Error during collection creation:", error);
+  }
+})();
