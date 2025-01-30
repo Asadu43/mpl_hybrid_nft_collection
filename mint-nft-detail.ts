@@ -24,8 +24,8 @@ import {
 } from "@solana/spl-token";
 
 export async function createAsset(umi: Umi) {
-  const BASE_URL =
-    "https://nft.ikigaionsol.com/media/IKI_";
+  const BASE_URL = "https://nft.ikigaionsol.com/media";
+  const BASE_URL_2 = "https://nft.ikigaionsol.com/media/IKI_1.json";
 
   const connection = new Connection(clusterApiUrl("devnet"));
 
@@ -90,12 +90,12 @@ export async function createAsset(umi: Umi) {
     collection: collection, // Existing collection
     owner: umi.identity.publicKey, // Owner of the asset
     name: `IKIGAI NFT`, // Asset name
-    uri: `${BASE_URL}1.json`, // Metadata URI
+    uri: `${BASE_URL}/IKI_3.json`, // Metadata URI
   });
 
   // Send and confirm the transaction
   await transaction.sendAndConfirm(umi);
-  console.log(`Created Asset Address: ${assetAddress.publicKey}`)
+  console.log(`Created Asset Address: ${assetAddress.publicKey}`);
 
   return assetAddress.publicKey;
 }
