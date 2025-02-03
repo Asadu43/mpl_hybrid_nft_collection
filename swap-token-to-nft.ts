@@ -27,7 +27,7 @@ umi.use(mplCore());
 umi.use(mplHybrid());
 
 // Define the public key of the escrow configuration.
-const escrowAddress = publicKey("4ov1tbM2nUKUDZeZtGLAKjFmGmGbxUV9Ww72ptDSQfJy");
+const escrowAddress = publicKey("J6imms21PcZ3CMTgysfohCeLarbxxBNDnPkc19txKEAi");
 
 // Define the public key of the collection associated with the escrow.
 const collectionAddress = publicKey(
