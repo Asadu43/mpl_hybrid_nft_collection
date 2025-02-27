@@ -49,7 +49,7 @@ await createTokenIfMissing(umi, {
       source: sourceTokenAccountPda,
       destination: escrowTokenAccountPda,
       // amount is calculated in lamports and decimals.
-      amount: 5000000000,
+      amount: 50000000000,
     })
   )
   .sendAndConfirm(umi);

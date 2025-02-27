@@ -18,6 +18,10 @@ export async function createCoreCollection() {
   umi.use(keypairIdentity(umiUser));
 
   // Generate a new signer for the collection
+  const updateAuthority = generateSigner(umi);
+
+
+  console.log(updateAuthority);
   const collectionAddress = generateSigner(umi);
 
   console.log(`Generated Collection Address: ${collectionAddress.publicKey}`);
@@ -28,6 +32,8 @@ export async function createCoreCollection() {
       name: "IKIGAI NFT Collection", // Collection name
       uri: `https://nft.ikigaionsol.com/media/collection.json`, // Metadata URI
       collection: collectionAddress, // Collection public key
+      updateAuthority:updateAuthority.publicKey,
+
     });
 
     // Send and confirm the transaction

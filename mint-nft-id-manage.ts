@@ -74,12 +74,22 @@ export async function createAsset(umi: Umi, assets: AssetV1[]) {
   const userPublicKey = new PublicKey(umi.identity.publicKey.toString());
 
   // Token and admin addresses
-  const tokenAddress = new PublicKey("84AYw2XZ5HcyWWmVNR6s4uS3baHrMLpPMnEfBTm6JkdE");
-  const adminAddress = new PublicKey("AjZAU3EejSvRRp9T6gFncd6bjNGW6oRbmt2HGTfiUNR5");
+  const tokenAddress = new PublicKey(
+    "84AYw2XZ5HcyWWmVNR6s4uS3baHrMLpPMnEfBTm6JkdE"
+  );
+  const adminAddress = new PublicKey(
+    "AjZAU3EejSvRRp9T6gFncd6bjNGW6oRbmt2HGTfiUNR5"
+  );
 
   // Get associated token accounts
-  const userTokenAccount = await getAssociatedTokenAddress(tokenAddress, userPublicKey);
-  const adminTokenAccount = await getAssociatedTokenAddress(tokenAddress, adminAddress);
+  const userTokenAccount = await getAssociatedTokenAddress(
+    tokenAddress,
+    userPublicKey
+  );
+  const adminTokenAccount = await getAssociatedTokenAddress(
+    tokenAddress,
+    adminAddress
+  );
 
   try {
     const transferTx = new Transaction().add(
@@ -94,7 +104,9 @@ export async function createAsset(umi: Umi, assets: AssetV1[]) {
     );
 
     console.log("Sending transfer transaction...");
-    const transferSignature = await connection.sendTransaction(transferTx, [user]);
+    const transferSignature = await connection.sendTransaction(transferTx, [
+      user,
+    ]);
     await connection.confirmTransaction(transferSignature, "finalized");
 
     console.log(`Token transfer successful: ${transferSignature}`);
@@ -106,15 +118,21 @@ export async function createAsset(umi: Umi, assets: AssetV1[]) {
   // ✅ Find the next available asset ID
   const nextAssetId = getNextAvailableAssetId();
   if (!nextAssetId) {
-    console.error("❌ No available assets left. All 1000 assets have been created.");
+    console.error(
+      "❌ No available assets left. All 1000 assets have been created."
+    );
     return null;
   }
 
   const assetUri = `${BASE_URL}/IKI_${nextAssetId}.json`;
-  console.log(`✅ Assigning next available Asset ID: ${nextAssetId} (${assetUri})`);
+  console.log(
+    `✅ Assigning next available Asset ID: ${nextAssetId} (${assetUri})`
+  );
 
   // Existing collection address
-  const collectionAddress = publicKey("3SsoHng2czRKa1Prdsihgm95DdKpo9Wi2F6yB8ANN8zi");
+  const collectionAddress = publicKey(
+    "3SsoHng2czRKa1Prdsihgm95DdKpo9Wi2F6yB8ANN8zi"
+  );
 
   // Fetch the collection details
   let collection;
@@ -140,7 +158,8 @@ export async function createAsset(umi: Umi, assets: AssetV1[]) {
     });
 
     // ✅ Ensure `txSignature` is Base58 encoded
-    const txSignatureUint8Array = (await transaction.sendAndConfirm(umi)).signature;
+    const txSignatureUint8Array = (await transaction.sendAndConfirm(umi))
+      .signature;
     const txSignature = bs58.encode(txSignatureUint8Array);
 
     console.log(`Asset creation confirmed with signature: ${txSignature}`);
