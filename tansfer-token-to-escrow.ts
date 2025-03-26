@@ -22,7 +22,7 @@ umi.use(keypairIdentity(umiUser));
 umi.use(mplTokenMetadata());
 umi.use(mplCore());
 umi.use(mplHybrid());
-const escrowAddress = publicKey("J6imms21PcZ3CMTgysfohCeLarbxxBNDnPkc19txKEAi");
+const escrowAddress = publicKey("JECkvqxFEAxKCLLXq757C7bEFRRqphhsg6adxpgMZgag");
 const tokenAddress = publicKey("84AYw2XZ5HcyWWmVNR6s4uS3baHrMLpPMnEfBTm6JkdE");
 // Generate the Token Account PDA from the funding wallet.
 const sourceTokenAccountPda = findAssociatedTokenPda(umi, {
@@ -49,7 +49,7 @@ await createTokenIfMissing(umi, {
       source: sourceTokenAccountPda,
       destination: escrowTokenAccountPda,
       // amount is calculated in lamports and decimals.
-      amount: 50000000000,
+      amount: 5000000000,
     })
   )
   .sendAndConfirm(umi);

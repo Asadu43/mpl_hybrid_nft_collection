@@ -26,27 +26,27 @@ export async function createAsset(umi: Umi, assets: AssetV1[]) {
   console.log(`🔹 Admin PublicKey: ${adminKeypair.publicKey}`);
 
   // ✅ Secret key array (User)
-  const secretKeyArray = new Uint8Array([
-    216, 12, 148, 233, 42, 95, 45, 198, 4, 57, 244, 253, 201, 68, 155, 22, 252,
-    139, 95, 220, 85, 82, 221, 111, 167, 122, 238, 54, 42, 149, 219, 56, 228,
-    191, 136, 27, 11, 142, 135, 44, 163, 126, 98, 38, 69, 240, 156, 93, 239,
-    215, 21, 175, 102, 98, 59, 197, 66, 140, 196, 185, 60, 63, 206, 193,
-  ]);
+  // const secretKeyArray = new Uint8Array([
+  //   216, 12, 148, 233, 42, 95, 45, 198, 4, 57, 244, 253, 201, 68, 155, 22, 252,
+  //   139, 95, 220, 85, 82, 221, 111, 167, 122, 238, 54, 42, 149, 219, 56, 228,
+  //   191, 136, 27, 11, 142, 135, 44, 163, 126, 98, 38, 69, 240, 156, 93, 239,
+  //   215, 21, 175, 102, 98, 59, 197, 66, 140, 196, 185, 60, 63, 206, 193,
+  // ]);
 
-  const userKeypair = Keypair.fromSecretKey(secretKeyArray);
-  const userPublicKey = publicKey(userKeypair.publicKey.toString());
-  const privateKeyBase58 = bs58.encode(userKeypair.secretKey);
-  console.log("Private Key (Base58):", privateKeyBase58);
+  // const userKeypair = Keypair.fromSecretKey(secretKeyArray);
+  // const userPublicKey = publicKey(userKeypair.publicKey.toString());
+  // const privateKeyBase58 = bs58.encode(userKeypair.secretKey);
+  // console.log("Private Key (Base58):", privateKeyBase58);
 
-  console.log(`🔹 User PublicKey: ${userPublicKey}`);
+  // console.log(`🔹 User PublicKey: ${userPublicKey}`);
 
-  // ✅ Convert user keypair to Umi format and set it as identity
-  const umiUser = umi.eddsa.createKeypairFromSecretKey(userKeypair.secretKey);
-  umi.use(keypairIdentity(umiUser));
+  // // ✅ Convert user keypair to Umi format and set it as identity
+  // const umiUser = umi.eddsa.createKeypairFromSecretKey(userKeypair.secretKey);
+  // umi.use(keypairIdentity(umiUser));
 
   // ✅ Existing collection address
   const collectionAddress = publicKey(
-    "7QufyPfmFXqGAqXMRMEHAQeL9sNw1Ajw9xD23WEvtPtL"
+    "BAxqnBkLbcoMJN3v7mHWuYjcB355QgEASSVfba9KTTUe"
   );
 
   // ✅ Fetch collection details
@@ -64,16 +64,15 @@ export async function createAsset(umi: Umi, assets: AssetV1[]) {
   console.log(`🆕 Creating asset: ${assetAddress.publicKey}`);
 
   try {
+    umi.use(keypairIdentity(adminKeypair));
     const transaction = create(umi, {
       asset: assetAddress,
       collection: collection,
-      owner: umiUser.publicKey, // ✅ Assigning ownership correctly
+      owner: umi.identity.publicKey, // ✅ Assigning ownership correctly
       name: `IKIGAI NFT`,
       uri: `${BASE_URL}/IKI_2.json`,
-      authority: adminKeypair,
     });
     // ✅ Sign with the required authority
-    umi.use(keypairIdentity(adminKeypair));
     // ✅ Send the transaction and get signature
     const txSignatureUint8Array = (await transaction.sendAndConfirm(umi))
       .signature;

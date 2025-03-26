@@ -15,9 +15,7 @@ import {
 } from "@metaplex-foundation/mpl-core";
 
 export async function createAsset(umi: Umi) {
-  const BASE_URL =
-    "https://rose-leading-cricket-429.mypinata.cloud/ipfs/QmSgEhWcYJE2iMrkas2WNTwZ5GVpVz2HjkDi2XP3VykUFi/";
-
+  const BASE_URL = "https://nft.ikigaionsol.com/media";
   const connection = new Connection(clusterApiUrl("devnet"));
 
   // Load user's keypair for signing
@@ -27,8 +25,7 @@ export async function createAsset(umi: Umi) {
 
   // Existing collection address
   const collectionAddress = publicKey(
-    "7qYGyrweq9adgZBzEgAdTNtiK5yWBwkY2imstKY5khj"
-  );
+    "FCjDZR1o7ZGneAyuxv6HcN7ENDYYSyuLcWrubTBiYVkX");
 
   // Fetch the collection details
   const collection = await fetchCollection(umi, collectionAddress);

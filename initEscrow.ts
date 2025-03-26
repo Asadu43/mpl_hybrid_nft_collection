@@ -1,5 +1,3 @@
-import { createCoreCollection } from "./_setup";
-
 import { clusterApiUrl, Connection } from "@solana/web3.js";
 import { getKeypairFromFile } from "@solana-developers/helpers";
 import { createUmi } from "@metaplex-foundation/umi-bundle-defaults";
@@ -48,7 +46,7 @@ umi.use(mplHybrid());
 const tokenAddress = publicKey("84AYw2XZ5HcyWWmVNR6s4uS3baHrMLpPMnEfBTm6JkdE");
 
 // Create a core collection on the Solana blockchain for managing assets.
-const  collection  = publicKey("3SsoHng2czRKa1Prdsihgm95DdKpo9Wi2F6yB8ANN8zi");
+const collection = publicKey("FCjDZR1o7ZGneAyuxv6HcN7ENDYYSyuLcWrubTBiYVkX");
 
 // Derive the PDA (Program Derived Address) for the escrow account using its program ID and collection public key.
 const escrow = umi.eddsa.findPda(MPL_HYBRID_PROGRAM_ID, [
